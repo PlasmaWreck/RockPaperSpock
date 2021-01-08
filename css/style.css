@@ -44,7 +44,67 @@ body{
     font-size: 15px;
 }
 
-img{
+.menuSize{
     height: 350px;
     width: auto;
 }
+
+.handButtonSize{
+    height: 400px;
+    width: 100%;
+}
+
+.arrowSizing{
+    height: 250px;
+    width: 75%;
+}
+
+.rockHeroImage{
+    background-image: url("../Images/itsnotjustaboulder.png");
+    height: 200px;
+    width: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+.paperHeroImage{
+    background-image: url("../Images/paper.png");
+    height: 200px;
+    width: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.scissorsHeroImage{
+    background-image: url("../Images/scissors.png");
+    height: 200px;
+    width: 250px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.lizardHeroImage{
+    background-image: url("../Images/lizard.png");
+    height: 200px;
+    width: 250px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.spockHeroImage{
+    background-image: url("../Images/spock.png");
+    height: 300px;
+    width: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+

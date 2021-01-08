@@ -9,23 +9,28 @@ let vsBot;
 let handTypes = {
     rock: {
         hand:'rock',
-        winsAgainst: ['scissors','lizard']
+        winsAgainst: ['scissors','lizard'],
+        imageURL: '../Images/itsnotjustaboulder.png'
     },
     paper: {
         hand:'paper',
-        winsAgainst: ['rock','spock']
+        winsAgainst: ['rock','spock'],
+        imageURL: '../Images/paper.png'
     },
     scissors: {
         hand:'scissors',
-        winsAgainst: ['paper','lizard']
+        winsAgainst: ['paper','lizard'],
+        imageURL: '../Images/scissors.png'
     },
     lizard: {
         hand:'lizard',
-        winsAgainst: ['spock','paper']
+        winsAgainst: ['spock','paper'],
+        imageURL: '../Images/lizard.png'
     },
     spock: {
         hand:'spock',
-        winsAgainst: ['scissors','rock']
+        winsAgainst: ['scissors','rock'],
+        imageURL: '../Images/spock.png'
     }
 };
 function compareHands(hand1,hand2){
@@ -66,12 +71,11 @@ function assignHand(handType, playerNum){
     };
     if(playerHands[0] !== "" && playerHands[1] !== ""){
         compareHands(playerHands[0],playerHands[1]);
-        playerHands = ["",""];
     };
 };
 function assignContinueKey(x){
     if(x.key === 'Enter'){
-        grabDom('rounds');
+        vsBot ? grabDom('botGame') : grabDom('playerGame');
         bodyClicker.removeEventListener("keypress", assignContinueKey);
     }
 }
@@ -157,18 +161,26 @@ function initializeGameSpace(inner, type){
     case 'home':
         let multiplayerBtn = document.getElementById("multiplayerBtn"), botBtn = document.getElementById("botBtn");
         multiplayerBtn.addEventListener("click", () => {
-            grabDom('instruction');
+            grabDom('rounds');
             vsBot = false;
         });
         botBtn.addEventListener("click", () => {
-            grabDom('instruction');
+            grabDom('rounds');
             vsBot = true;
         });
     break;
     case 'win':
 
         bodyClicker.removeEventListener("keypress", assignPlayerKeys);
-
+        let playerOneHandIMG = document.getElementById("playerOneHandIMG"), arrowIMG = document.getElementById("arrowIMG"), playerTwoHandIMG = document.getElementById("playerTwoHandIMG");
+        playerOneHandIMG.src = playerHands[0].imageURL;
+        playerTwoHandIMG.src = playerHands[1].imageURL;
+        if(winningPlayer === 1){
+            arrowIMG.src = '../Images/arrowRight.png'
+        }else if(winningPlayer === 2){
+            arrowIMG.src = '../Images/arrow.png'
+        }else arrowIMG.src = '../Images/equals.png'
+        playerHands = ["",""]
         if(maxWins === player1Score || maxWins === player2Score){
             let winText = document.getElementById("winningInjectable"), returnBtn = document.getElementById("returnBtn"), continueBt = document.getElementById("continueBtn"), player1ScoreText = document.getElementById("player1Score"), player2ScoreText = document.getElementById("player2Score");
             returnBtn.addEventListener("click", () => {
@@ -182,13 +194,11 @@ function initializeGameSpace(inner, type){
             }else winText.innerText = `Player ${winningPlayer} wins this whole game!`;
 
         }else{
-            let winText = document.getElementById("winningInjectable"), returnBtn = document.getElementById("returnBtn"), continueBt = document.getElementById("continueBtn"), player1ScoreText = document.getElementById("player1Score"), player2ScoreText = document.getElementById("player2Score");
+            let winText = document.getElementById("winningInjectable"), returnBtn = document.getElementById("returnBtn"), player1ScoreText = document.getElementById("player1Score"), player2ScoreText = document.getElementById("player2Score");
             returnBtn.addEventListener("click", () => {
                 grabDom();
             });
-            continueBtn.addEventListener("click", () => {
-                vsBot ? grabDom('botGame') : grabDom('playerGame');
-            });
+            bodyClicker.addEventListener("keypress", assignContinueKey);
             player1ScoreText.innerText = player1Score;
             player2ScoreText.innerText = player2Score;
             if(winningPlayer === 0){
@@ -196,9 +206,6 @@ function initializeGameSpace(inner, type){
             }else winText.innerText = `Player ${winningPlayer} wins this round!`;
         }
             
-    break;
-    case 'instruction':
-        bodyClicker.addEventListener("keypress", assignContinueKey);
     break;
     }
 };
@@ -219,11 +226,7 @@ async function grabDom(screenType){
         let temp = await fetch('../html/gameChoice.html');
         temp = await temp.text();
         initializeGameSpace(temp,'rounds');
-    }else if(screenType === 'instruction'){
-        let temp = await fetch('../html/instructionPage.html');
-        temp = await temp.text();
-        initializeGameSpace(temp,'instruction');
-    }else{
+    }else {
         let temp = await fetch('../html/homeMenu.html');
         player1Score = 0;
         player2Score = 0;
