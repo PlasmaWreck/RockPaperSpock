@@ -1,0 +1,42 @@
+@font-face{
+    font-family: flyStrategy;
+    src: url('/fonts/FtyStrategycideNcv-elGl.ttf');
+}
+
+body{
+    background-image: url('../Images/enterprizeBackground.jpg');
+    color: white;
+    font-family: flyStrategy;
+}
+.homeCol{
+    height: 500px;
+}
+.opaqueBlueBG{
+    background-color: rgba(108, 21, 207, 0.459);
+}
+.fontSize45{
+    font-size: 45px;
+}
+.fontSize40{
+    font-size: 40px;
+}
+.fontSize35{
+    font-size: 35px;
+}
+.fontSize30{
+    font-size: 30px;
+}
+.fontSize25{
+    font-size: 25px;
+}
+.fontSize20{
+    font-size: 20px;
+}
+.fontSize15{
+    font-size: 15px;
+}
+
+img{
+    height: 350px;
+    width: auto;
+}
