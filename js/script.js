@@ -1,4 +1,5 @@
 let titleInjectable = document.getElementById("titleInjectable");
+let bodyClicker = document.getElementById("bodyInjectable");
 let playerHands = ["",""];
 let winningPlayer = 0;
 let player1Score = 0;
@@ -68,42 +69,72 @@ function assignHand(handType, playerNum){
         playerHands = ["",""];
     };
 };
+function assignContinueKey(x){
+    if(x.key === 'Enter'){
+        grabDom('rounds');
+        bodyClicker.removeEventListener("keypress", assignContinueKey);
+    }
+}
+function assignPlayerKeys(keyPressEvent){
+    if(!vsBot){
+        switch(keyPressEvent.key){
+            case 'w':
+                assignHand("Rock", 1);
+            break;
+            case 'a':
+                assignHand("Paper", 1);
+            break;
+            case 's':
+                assignHand("Scissors", 1);
+            break;
+            case 'd':
+                assignHand("Lizard", 1);
+            break;
+            case 'x':
+                assignHand("Spock", 1);
+            break;
+            case 'i':
+                assignHand("Rock", 2);
+            break;
+            case 'j':
+                assignHand("Paper", 2);
+            break;
+            case 'k':
+                assignHand("Scissors", 2);
+            break;
+            case 'l':
+                assignHand("Lizard", 2);
+            break;
+            case 'm':
+                assignHand("Spock", 2);
+            break;
+        }
+    }else {
+        switch(keyPressEvent.key){
+            case 'w':
+                assignHand("Rock", 1);
+            break;
+            case 'a':
+                assignHand("Paper", 1);
+            break;
+            case 's':
+                assignHand("Scissors", 1);
+            break;
+            case 'd':
+                assignHand("Lizard", 1);
+            break;
+            case 'x':
+                assignHand("Spock", 1);
+            break;
+        }
+        getFetch();
+    }
+}
 function initializeGameSpace(inner, type){
     titleInjectable.innerHTML = inner;
     switch(type){
     case 'player':
-        let rockBtn = document.getElementById("rockBtn") ,paperBtn = document.getElementById("paperBtn") ,lizardBtn = document.getElementById("lizardBtn") ,scissorsBtn = document.getElementById("scissorsBtn") ,spockBtn = document.getElementById("spockBtn");
-        rockBtn.addEventListener("click", () => {
-            assignHand("Rock", 1);
-        });
-        paperBtn.addEventListener("click", () => {
-            assignHand("Paper", 1);
-        });
-        scissorsBtn.addEventListener("click", () => {
-            assignHand("Scissors", 1);
-        });
-        lizardBtn.addEventListener("click", () => {
-            assignHand("Lizard", 1);
-        });
-        spockBtn.addEventListener("click", () => {
-            assignHand("Spock", 1);
-        });
-        
-        rockBtn2.addEventListener("click", () => {
-            assignHand("Rock", 2);
-        });
-        paperBtn2.addEventListener("click", () => {
-            assignHand("Paper", 2);
-        });
-        scissorsBtn2.addEventListener("click", () => {
-            assignHand("Scissors", 2);
-        });
-        lizardBtn2.addEventListener("click", () => {
-            assignHand("Lizard", 2);
-        });
-        spockBtn2.addEventListener("click", () => {
-            assignHand("Spock", 2);
-        });
+        bodyClicker.addEventListener("keypress", assignPlayerKeys);
     break;
     case 'rounds':
         let oneWinBtn = document.getElementById("oneWinBtn") ,threeWinBtn = document.getElementById("threeWinBtn") ,fourWinBtn = document.getElementById("fourWinBtn");
@@ -121,40 +152,23 @@ function initializeGameSpace(inner, type){
         });
     break;
     case 'bot':
-        let rockBotBtn = document.getElementById("rockBotBtn") ,paperBotBtn = document.getElementById("paperBotBtn") ,lizardBotBtn = document.getElementById("lizardBotBtn") ,scissorsBotBtn = document.getElementById("scissorsBotBtn") ,spockBotBtn = document.getElementById("spockBotBtn");
-        rockBotBtn.addEventListener("click", () => {
-            assignHand("Rock", 1);
-            getFetch();
-        });
-        paperBotBtn.addEventListener("click", () => {
-            assignHand("Paper", 1);
-            getFetch();
-        });
-        scissorsBotBtn.addEventListener("click", () => {
-            assignHand("Scissors", 1);
-            getFetch();
-        });
-        lizardBotBtn.addEventListener("click", () => {
-            assignHand("Lizard", 1);
-            getFetch();
-        });
-        spockBotBtn.addEventListener("click", () => {
-            assignHand("Spock", 1);
-            getFetch();
-        });
+        bodyClicker.addEventListener("keypress", assignPlayerKeys);
     break;
     case 'home':
         let multiplayerBtn = document.getElementById("multiplayerBtn"), botBtn = document.getElementById("botBtn");
         multiplayerBtn.addEventListener("click", () => {
-            grabDom('rounds');
+            grabDom('instruction');
             vsBot = false;
         });
         botBtn.addEventListener("click", () => {
-            grabDom('rounds');
+            grabDom('instruction');
             vsBot = true;
         });
     break;
     case 'win':
+
+        bodyClicker.removeEventListener("keypress", assignPlayerKeys);
+
         if(maxWins === player1Score || maxWins === player2Score){
             let winText = document.getElementById("winningInjectable"), returnBtn = document.getElementById("returnBtn"), continueBt = document.getElementById("continueBtn"), player1ScoreText = document.getElementById("player1Score"), player2ScoreText = document.getElementById("player2Score");
             returnBtn.addEventListener("click", () => {
@@ -183,6 +197,9 @@ function initializeGameSpace(inner, type){
         }
             
     break;
+    case 'instruction':
+        bodyClicker.addEventListener("keypress", assignContinueKey);
+    break;
     }
 };
 async function grabDom(screenType){
@@ -198,11 +215,14 @@ async function grabDom(screenType){
         let temp = await fetch('../html/winScreen.html');
         temp = await temp.text();
         initializeGameSpace(temp,'win');
-        
     }else if(screenType === 'rounds'){
         let temp = await fetch('../html/gameChoice.html');
         temp = await temp.text();
         initializeGameSpace(temp,'rounds');
+    }else if(screenType === 'instruction'){
+        let temp = await fetch('../html/instructionPage.html');
+        temp = await temp.text();
+        initializeGameSpace(temp,'instruction');
     }else{
         let temp = await fetch('../html/homeMenu.html');
         player1Score = 0;
